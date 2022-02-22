@@ -108,6 +108,38 @@ post '/finstagram_posts' do
 
 end
 
+post '/comments' do
+
+     # point values from params to variables
+     text = params[:text]
+     finstagram_post_id = params[:finstagram_post_id]
+
+     # instatantiate a comment with thsoe values & assign the comment to the 'current_user'
+     comment = Comment.new({ text: text, finstagram_post_id: finstagram_post_id, user_id: current_user.id })
+
+     # save the comment 
+     comment.save
+
+     # 'redirect' back to where we came from 
+     redirect(back)
+
+end
+
+post '/likes' do
+     finstagram_post_id = params[:finstagram_post_id]
+
+     like = Like.new({ finstagram_post_id: finstagram_post_id, user_id: current_user.id })
+     like.save
+
+     redirect(back)
+end
+
+delete '/likes/:id' do
+     like = Like.find(params[:id])
+     like.destroy
+     redirect(back)
+end
+
 # post / login route
 #    if user && user.authenticate(password)
           #session[:user_id] = user.id 
